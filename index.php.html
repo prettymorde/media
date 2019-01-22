@@ -1,0 +1,122 @@
+<!Doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		
+		<title>User Validation</title>
+	</head>
+	<body bgcolor="gray">
+		<h3>Personal Information (MODESTA1008)</h3>
+		
+		<table border="6" align="center">
+			<caption>Provide the following information</caption>
+			<tr>
+				<td>VU_ID:</td>
+				<td><input type="text" id="vu_id" maxlength="11" font="30"/></td>
+			</tr>
+			<tr>
+				<td>Name:</td>
+				<td><input type="text" id="name" size="40"/></td>
+			</tr>
+			<tr>
+				<td>City:</td>
+				<td><input type="text" id="city" size="24" value="Your City_name"/></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td style="float:right">
+					<button id="reset">Reset All</button>
+					<button id="verify">Verify</button>
+				</td>
+			</tr>
+		</table>
+		
+		<script type="text/javascript">
+			//-- The User Interface Manager
+			var UI = (function(){
+				var vuIdObj = document.querySelector("#vu_id");
+				var nameObj = document.querySelector("#name");
+				var cityObj = document.querySelector("#city");
+				var resetBtnObj = document.querySelector("#reset");
+				var verifyBtnObj = document.querySelector("#verify");
+				
+				return {
+					vuIdObj: vuIdObj,
+					nameObj: nameObj,
+					cityObj: cityObj,
+					
+					resetBtnObj: resetBtnObj,
+					verifyBtnObj: verifyBtnObj
+				};
+			})();
+			
+			//-- This handles the apps functionalities
+			var Modules = (function(){
+				function verifyVuid(vuid){
+					return vuid === "MODESTA1008";
+				}
+				
+				function verifyName(name){
+					return name !== '';
+				}
+				
+				function verifyCity(city){
+					return city !== '';
+				}
+				
+				return {
+					verifyVuid: verifyVuid,
+					verifyName: verifyName,
+					verifyCity: verifyCity
+				}
+			})();
+			
+			//-- The App controller
+			var App = (function(UI, Modules){
+				function reset(){
+					UI.vuIdObj.value = "";
+					UI.nameObj.value = "";
+					UI.cityObj.value = "Your City_name";
+				}
+				
+				function verify(){
+					var vuid = UI.vuIdObj.value;
+					var name = UI.nameObj.value;
+					var city = UI.cityObj.value;
+					//var ok = true;
+					
+					if(!Modules.verifyVuid(vuid)){
+						UI.vuIdObj.focus();
+						alert('ID must be MODESTA1008');
+						return;
+					}
+					
+					if(!Modules.verifyName(name)){
+						UI.nameObj.focus();
+						alert('Kindly Enter your Name');
+						return;
+					}
+					
+					if(!Modules.verifyCity(city)){
+						UI.nameObj.focus();
+						alert('Kindly Enter your City');
+						return;
+					}
+					
+					window.location.href = "home.html";
+				}
+				
+				
+				function registerEvents(){
+					UI.resetBtnObj.addEventListener('click', reset);
+					UI.verifyBtnObj.addEventListener('click', verify);
+				}
+				
+				registerEvents();
+			})(UI, Modules);
+			
+			
+		</script>
+	</body>
+</html>
